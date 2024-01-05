@@ -1,10 +1,14 @@
 import React from 'react'
 import Logincard from './loginPage'
+import Mainmail from './Mainmail'
+import Sidemenu from './Sidemenu'
 
 const AppBody = () => {
   return (
     <div>
-        <Logincard/>
+      <Sidemenu/>
+        {/* <Logincard/> */}
+      {/* <Mainmail/> */}
     </div>
   )
 }
