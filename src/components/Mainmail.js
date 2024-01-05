@@ -42,10 +42,10 @@ const Mainmail = () => {
   }  
 
   return (
-    <Container>
-      <div style={{display:'flex',alignItems:'center',justifyContent:'center',margin:'4vh',border:'solid 1px',borderColor:'lightblue',padding:'2vh',borderRadius:'10px'}}> 
+      <div style={{display:'flex',alignItems:'flex-end',justifyContent:'flex-end',margin:'4vh',border:'solid 1px',borderColor:'lightblue',padding:'2vh',borderRadius:'10px',flexDirection:'column',width:'75%',marginTop:'8vw',position:'absolute',top:'0',right:'0'}}> 
       <Container>
       <div > 
+        <h3>New message </h3>
       <Form.Group as={Row} className="mb-3" controlId="formPlaintextEmail" required>
         <Form.Label column sm="2">
           To :
@@ -59,7 +59,7 @@ const Mainmail = () => {
           <Form.Control plaintext placeholder="subject" value={subject} onChange={onSubjectChange} />
         </Col>
       </Form.Group>
-      <div style={{height:'60Vh'}}>
+      <div style={{height:'50Vh'}}>
       <Editor
               defaultContentState={contentState}
               onContentStateChange={setContentState}
@@ -68,11 +68,10 @@ const Mainmail = () => {
               toolbarClassName="toolbar-class"
           />
       </div>
-      <Button variant="primary" style={{borderRadius:'15px',fontSize:'15px',justifyContent:'right'}} onClick={sendmail}>send</Button>
+      <Button variant="primary" style={{borderRadius:'15px',fontSize:'15px',alignItems:'end'}} onClick={sendmail}>send</Button>
           </div>
       </Container> 
-    </div>
-    </Container>
+    </div>      
   )
 }
 export default Mainmail
