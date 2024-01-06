@@ -26,7 +26,9 @@ const Mainmail = () => {
   const onToChange = (e) => {
     setTo(e.target.value);
   };
-  const newmaildata={to,subject,maintext}
+
+  const read=false
+  const newmaildata={to,subject,maintext,read}
 
   const sendmail=(e)=>{
     e.preventDefault();
