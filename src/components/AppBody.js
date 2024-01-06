@@ -7,9 +7,7 @@ import Inbox from './Inbox'
 const AppBody = () => {
   return (
     <div style={{width:'100vw',height:'100vh'}}>
-      <Sidemenu/>
       <Inbox/>
-      {/* <Mainmail/> */}
     </div>
   )
 }

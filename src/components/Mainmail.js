@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { convertToRaw,ContentState } from 'draft-js';
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import Form from 'react-bootstrap/Form';
@@ -8,6 +8,8 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import { Editor } from "react-draft-wysiwyg";
 import axios from 'axios';
+import Sidemenu from './Sidemenu';
+import { useNavigate } from 'react-router-dom';
  
 const Mainmail = () => {
   const [subject, setSubject] = useState('');
@@ -18,6 +20,7 @@ const Mainmail = () => {
   const [maildata,setmaildata]=useState([])
   const texts = contentState.blocks.map(obj => obj.text);
   const maintext=texts[0]
+  const navigate=useNavigate()
 
   const onSubjectChange = (e) => {
     setSubject(e.target.value);
@@ -36,6 +39,7 @@ const Mainmail = () => {
     axios.post('https://mail-box-cebe9-default-rtdb.firebaseio.com/maildata.json', newmaildata)
     .then(response => {
       console.log('item added');
+      navigate('/inbox');
       alert('mail sent')
     })
     .catch(error => {
@@ -43,7 +47,8 @@ const Mainmail = () => {
     });
   }  
 
-  return (
+  return (<>
+  <Sidemenu/>
       <div style={{display:'flex',alignItems:'flex-end',justifyContent:'flex-end',margin:'4vh',border:'solid 1px',borderColor:'lightblue',padding:'2vh',borderRadius:'10px',flexDirection:'column',width:'75%',marginTop:'8vw',position:'absolute',top:'0',right:'0'}}> 
       <Container>
       <div > 
@@ -73,7 +78,9 @@ const Mainmail = () => {
       <Button variant="primary" style={{borderRadius:'15px',fontSize:'15px',alignItems:'end'}} onClick={sendmail}>send</Button>
           </div>
       </Container> 
-    </div>      
+    </div> 
+  </>
+         
   )
 }
 export default Mainmail

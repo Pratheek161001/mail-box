@@ -4,23 +4,34 @@ import axios from 'axios';
 import Accordion from 'react-bootstrap/Accordion';
 import Button from 'react-bootstrap/esm/Button';
 import CloseButton from 'react-bootstrap/CloseButton';
-
+import Sidemenu from './Sidemenu';
 
 const Inbox = () => {
     const [maildata, setmaildata] = useState([]);
     const [clickedItems, setClickedItems] = useState({})
+    const [count, setcount] = useState(1)
 
-    useEffect(()=>{
+    const fetchData = () => {
         axios.get('https://mail-box-cebe9-default-rtdb.firebaseio.com/maildata.json')
       .then(response => {
-        console.log(response.data)
-        setmaildata(...maildata,response.data);
-        console.log(maildata)
+        const fetchedMaildata = response.data || [];
+        setmaildata(fetchedMaildata);
+        let computedCount = 0;
+        for (const key in fetchedMaildata) {
+          if (fetchedMaildata[key] && !fetchedMaildata[key].seen) {
+            computedCount++;
+          }
+        }
+        setcount(computedCount);
       })
       .catch(error => {
         console.error('Error adding expense:', error.message);
       });
-      },[maildata])
+      }
+
+      useEffect(() => {
+        fetchData();
+      }, []);
 
       const toggleSeen = async (key,subject,maintext,to) => {
         if (!clickedItems[key]) {
@@ -37,6 +48,9 @@ const Inbox = () => {
               ...prevClickedItems,
               [key]: true,
             }));
+            if (!maildata[key].seen) {
+              setcount(prevCount => prevCount - 1); 
+            }
           } catch (error) {
             console.error('Error updating data in Firebase:', error);
           }
@@ -46,6 +60,8 @@ const Inbox = () => {
         event.preventDefault();
         axios.delete(`https://mail-box-cebe9-default-rtdb.firebaseio.com/maildata/${key}.json`)
       .then(response => {
+        fetchData()
+        console.log(maildata)
         console.log('deleted');
       })
       .catch(error => {
@@ -53,9 +69,8 @@ const Inbox = () => {
       });
       }
 
-  
-  return (
-    <div style={{display:'flex',alignItems:'flex-start',justifyContent:'flex-start',margin:'4vh',border:'solid 1px',borderColor:'lightblue',padding:'2vh',borderRadius:'5px',flexDirection:'column',width:'82%',marginTop:'5vw',position:'absolute',top:'0',right:'0',height:'100vh'}}>
+  return (<><Sidemenu count={count}/>
+   <div style={{display:'flex',alignItems:'flex-start',justifyContent:'flex-start',margin:'4vh',border:'solid 1px',borderColor:'lightblue',padding:'2vh',borderRadius:'5px',flexDirection:'column',width:'82%',marginTop:'5vw',position:'absolute',top:'0',right:'0',height:'100vh'}}>
         {maildata && Object.keys(maildata).length > 0 ? (
            <Accordion defaultActiveKey="0" style={{width:'100%'}}>
               {Object.keys(maildata).map((key,index) => (
@@ -74,6 +89,8 @@ const Inbox = () => {
                   :(<h2>no mails yet</h2>)
         }
     </div>
+  </>
+   
   )
 }
 

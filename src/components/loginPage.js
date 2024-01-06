@@ -5,12 +5,14 @@ import Button from 'react-bootstrap/Button';
 import {useDispatch,useSelector} from 'react-redux'
 import { toggleLoginSignup } from './Store/authActions';
 import { useRef } from 'react';
+import { useNavigate } from 'react-router-dom'
 
 const Logincard=()=> {
     const dispatch=useDispatch()
     const isLogin = useSelector((state) => state.auth.isLogin);
     const emailinputref=useRef();
     const passwordinputref=useRef();
+    const navigate = useNavigate();
 
     const handleToggle = () => {
         dispatch(toggleLoginSignup());
@@ -52,7 +54,7 @@ const Logincard=()=> {
         .then((data)=>{
             const dataString = JSON.stringify(data);
             localStorage.setItem('idToken',dataString);
-            !isLogin ? handleToggle():console.log('congrats')
+            !isLogin ? handleToggle():navigate('/inbox')
         })
         .catch((err)=>{alert(err.message)})
       }
